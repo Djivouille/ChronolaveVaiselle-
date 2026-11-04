@@ -13,10 +13,19 @@ Exemples d'utilisation : qui a vidé le lave-vaisselle, qui a sorti le lave-ling
 
 ## Installation
 
-### Via HACS
+### Via HACS (recommandé)
 
-1. Ajoutez ce dépôt comme dépôt personnalisé dans HACS (catégorie *Integration*).
-2. Installez **Who Did It** puis redémarrez Home Assistant.
+Prérequis : [HACS](https://hacs.xyz/installation/prerequisites/) déjà installé.
+
+1. Dans Home Assistant, ouvrez **HACS** dans le menu latéral.
+2. Cliquez sur les **trois points** en haut à droite, puis **Dépôts personnalisés** (*Custom repositories*).
+3. Collez l'URL du dépôt et choisissez la catégorie **Integration** :
+   - URL : `https://github.com/Djivouille/who_did_it`
+   - Catégorie : `Integration`
+4. Cliquez sur **Ajouter**, puis fermez la fenêtre.
+5. Recherchez **Who Did It** dans HACS, ouvrez la fiche et cliquez sur **Télécharger** (*Download*).
+6. **Redémarrez Home Assistant** (Paramètres > Système > Redémarrer).
+7. Ajoutez l'intégration : **Paramètres > Appareils et services > Ajouter une intégration**, recherchez **Who Did It** et suivez l'assistant (voir [Configuration](#configuration)).
 
 ### Manuelle
 
