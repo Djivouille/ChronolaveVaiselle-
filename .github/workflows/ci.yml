@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  hassfest:
+    name: Hassfest (validation Home Assistant)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Hassfest custom integration
+        uses: home-assistant/actions/hassfest@master
+        with:
+          path: custom_components/chronolavevaiselle
+
+  ruff:
+    name: Ruff (lint Python)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Ruff check
+        uses: astral-sh/ruff-action@v1
+        with:
+          args: check custom_components/chronolavevaiselle
+
+  syntax:
+    name: Syntaxe Python / JSON / YAML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Installer pyyaml
+        run: pip install pyyaml
+      - name: Compiler les fichiers Python
+        run: python -m compileall -q custom_components/chronolavevaiselle
+      - name: Valider JSON et YAML
+        run: |
+          python - <<'PYEOF'
+          import json
+          import pathlib
+          import yaml
+          root = pathlib.Path("custom_components/chronolavevaiselle")
+          for f in list(root.rglob("*.json")) + [pathlib.Path("hacs.json")]:
+              json.loads(f.read_text(encoding="utf-8"))
+              print(f"OK {f}")
+          yaml.safe_load((root / "services.yaml").read_text(encoding="utf-8"))
+          print("OK services.yaml")
+          PYEOF

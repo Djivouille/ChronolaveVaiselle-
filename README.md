@@ -1,5 +1,7 @@
 # ChronolaveVaiselle
 
+[![CI](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml/badge.svg)](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml)
+
 Custom integration Home Assistant pour le lave-vaisselle :
 
 1. **Chronomètre de cycle** : capteur du temps restant avant la fin du lavage.
