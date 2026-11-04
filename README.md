@@ -1,33 +1,35 @@
-# ChronolaveVaiselle
+# Who Did It
 
 [![CI](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml/badge.svg)](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml)
 
-Custom integration Home Assistant pour le lave-vaisselle :
+Custom integration Home Assistant générique pour suivre **qui a fait quoi** dans la maison :
 
-1. **Chronomètre de cycle** : capteur du temps restant avant la fin du lavage.
-2. **Suivi des vidages** : comptabilise qui vide le lave-vaisselle, avec anti-triche (cooldown entre deux vidages).
+- **Suivi des tâches** : comptabilise qui a réalisé chaque tâche, avec anti-triche (cooldown entre deux réalisations).
+- **Multi-tâches** : une entrée par tâche — « Lave-vaisselle », « Lave-linge », « Chien »... chacune avec sa propre icône.
+
+Exemples d'utilisation : qui a vidé le lave-vaisselle, qui a sorti le lave-linge, qui a donné à manger au chien.
 
 ## Installation
 
 ### Via HACS
 
 1. Ajoutez ce dépôt comme dépôt personnalisé dans HACS (catégorie *Integration*).
-2. Installez **ChronolaveVaiselle** puis redémarrez Home Assistant.
+2. Installez **Who Did It** puis redémarrez Home Assistant.
 
 ### Manuelle
 
-1. Copiez le dossier `custom_components/chronolavevaiselle/` dans le dossier `custom_components/` de votre installation Home Assistant.
+1. Copiez le dossier `custom_components/who_did_it/` dans le dossier `custom_components/` de votre installation Home Assistant.
 2. Redémarrez Home Assistant.
 
 ## Configuration
 
-Ajoutez l'intégration via **Paramètres > Appareils et services > Ajouter une intégration > ChronolaveVaiselle** :
+Ajoutez l'intégration via **Paramètres > Appareils et services > Ajouter une intégration > Who Did It** (autant de fois que de tâches à suivre) :
 
-- **Nom** : nom du lave-vaisselle.
-- **Durée du cycle par défaut (minutes)** : durée utilisée par le service `start_cycle` quand aucune durée n'est fournie.
-- **Capteur binaire de lavage en cours** (optionnel) : ex. `binary_sensor.lavage_vaiselle_en_cours`. Quand il passe de `on` à `off`, la vaisselle est marquée « à ranger ».
+- **Nom** : nom de la tâche (ex. `Lave-vaisselle`, `Lave-linge`, `Chien`).
+- **Icône** : icône Material Design affichée sur toutes les entités de la tâche (ex. `mdi:dishwasher`, `mdi:washing-machine`, `mdi:dog`).
+- **Capteur binaire déclencheur** (optionnel) : ex. `binary_sensor.lave_linge_en_cours`. Quand il passe de `on` à `off`, la tâche est marquée « à faire ».
 - **Personnes** : membres de la famille, séparés par des virgules (ex. `Chloe, Axel, Joelle, Jv`). Un compteur est créé par personne.
-- **Délai minimum entre deux vidages (heures)** : cooldown anti-triche (6 h par défaut), comme ton ancien script (`21600 s`).
+- **Délai minimum entre deux réalisations (heures)** : cooldown anti-triche (6 h par défaut).
 
 Tout est modifiable ensuite via **Options** de l'intégration.
 
@@ -35,63 +37,60 @@ Tout est modifiable ensuite via **Options** de l'intégration.
 
 | Entité | Description |
 |---|---|
-| `sensor.<nom>_temps_restant` | Minutes restantes du cycle (attributs `running`, `cycle_end`) |
-| `binary_sensor.<nom>_vaisselle_a_ranger` | `on` quand la vaisselle attend d'être vidée |
-| `sensor.<nom>_dernier_vidage_par` | Dernière personne ayant vidé |
-| `sensor.<nom>_dernier_vidage_le` | Date/heure du dernier vidage |
-| `sensor.<nom>_<personne>` | Compteur de vidages par personne (`state_class: total_increasing`) |
+| `binary_sensor.<nom>_pending` | `on` quand la tâche est « à faire » |
+| `sensor.<nom>_last_by` | Dernière personne ayant réalisé la tâche |
+| `sensor.<nom>_last_at` | Date/heure de la dernière réalisation |
+| `sensor.<nom>_<personne>` | Compteur de réalisations par personne (`state_class: total_increasing`) |
 
-Tous les états sont restaurés après un redémarrage de Home Assistant.
+Toutes les entités d'une même tâche partagent l'icône configurée. Tous les états sont restaurés après un redémarrage de Home Assistant.
 
 ## Services
 
-- `chronolavevaiselle.start_cycle` : démarre le chronomètre (champ optionnel `duration` en minutes).
-- `chronolavevaiselle.empty` : enregistre qu'une personne a vidé le lave-vaisselle (champ `person`, doit être une personne configurée).
+- `who_did_it.done` : enregistre qu'une personne a réalisé la tâche (champ `person`, doit être une personne configurée). Le service s'applique à toutes les entrées où cette personne est configurée.
 
-Règles du service `empty` (idem ton ancien script) :
+Règles du service `done` :
 
-- Si la vaisselle n'est pas « à ranger » → refus.
-- Si le dernier vidage date de moins que le cooldown → refus avec `retry_at`.
-- Sinon → incrément du compteur de la personne, mise à jour du dernier acteur/date, vaisselle plus « à ranger ».
+- Si la tâche n'est pas « à faire » → refus.
+- Si la dernière réalisation date de moins que le cooldown → refus avec `retry_at`.
+- Sinon → incrément du compteur de la personne, mise à jour du dernier acteur/date, tâche plus « à faire ».
 
 ## Événements
 
-- `chronolavevaiselle_cycle_ended` : fin du lavage détectée (capteur configuré passé `on` → `off`).
-- `chronolavevaiselle_cycle_finished` : chronomètre arrivé à 0.
-- `chronolavevaiselle_emptied` : vidage validé (`person`, `count`).
-- `chronolavevaiselle_empty_denied` : vidage refusé (`person`, `reason` = `no_dishes_pending` ou `cooldown`, `retry_at` si cooldown).
+- `who_did_it_pending` : la tâche vient d'être marquée « à faire » (capteur déclencheur passé `on` → `off`).
+- `who_did_it_done` : réalisation validée (`entry_id`, `person`, `count`).
+- `who_did_it_denied` : réalisation refusée (`entry_id`, `person`, `reason` = `nothing_pending` ou `cooldown`, `retry_at` si cooldown).
 
 ## Exemples d'automatisations
 
-Notifier la famille à la fin du lavage (remplace l'ancien trigger sur `binary_sensor.lavage_vaiselle_en_cours`) :
+Notifier la famille quand le lave-linge a fini (la tâche « Lave-linge » passe « à faire ») :
 
 ```yaml
 automation:
-  - alias: "Fin de lavage : prévenir la famille"
+  - alias: "Lave-linge terminé : prévenir la famille"
     triggers:
       - trigger: event
-        event_type: chronolavevaiselle_cycle_ended
+        event_type: who_did_it_pending
+        event_data:
+          entry_id: !secret entry_id_lave_linge
     actions:
       - action: notify.telegram_maison
         data:
-          title: "🔔 Lave-vaisselle 🍽️"
-          message: "Cycle terminé, il y a de la vaisselle à sortir !"
-          data:
-            inline_keyboard: "😇 Vaiselle sorti !:/vaisselle_sorti"
+          title: "🧺 Lave-linge 🍽️"
+          message: "Cycle terminé, il y a du linge à sortir !"
 ```
 
-Bouton Telegram « vaisselle sortie » pour Chloe (remplace l'ancien script `LaveVaiselle`) :
+Bouton Telegram « fait ! » pour Chloe (tâche « Lave-vaisselle ») :
 
 ```yaml
 automation:
-  - alias: "Telegram : vaisselle sortie (Chloe)"
+  - alias: "Telegram : tâche faite (Chloe)"
     triggers:
       - trigger: event
         event_type: telegram_callback
         event_data:
-          command: /vaisselle_sorti_chloe
+          command: /tache_faite_chloe
     actions:
-      - action: chronolavevaiselle.empty
+      - action: who_did_it.done
         data:
           person: Chloe
 ```
@@ -100,15 +99,18 @@ Alerter en cas de tentative de triche (cooldown non respecté) :
 
 ```yaml
 automation:
-  - alias: "Vidage refusé : tricheur !"
+  - alias: "Who Did It : tentative de triche"
     triggers:
       - trigger: event
-        event_type: chronolavevaiselle_empty_denied
+        event_type: who_did_it_denied
+        event_data:
+          reason: cooldown
     actions:
       - action: notify.telegram_maison
         data:
-          title: "🔔 Lave Vaiselle 🍽️"
-          message: >-
-            {{ trigger.event.data.person }} tricheur ! 👿
-            Prochain vidage possible à {{ trigger.event.data.retry_at }}.
+          message: "Tentative de triche détectée ! Réessaie à {{ trigger.event.data.retry_at }}."
 ```
+
+## Traductions
+
+L'intégration est traduite en **français** et **anglais** (`custom_components/who_did_it/translations/`). Pour ajouter une langue, consultez [CONTRIBUTING.md](CONTRIBUTING.md) : il suffit d'ajouter un fichier `translations/<lang>.json` via une pull request Git.

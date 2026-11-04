@@ -4,17 +4,20 @@ from typing import Any
 
 import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
-from homeassistant.const import CONF_NAME
+from homeassistant.const import CONF_ICON, CONF_NAME
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers.selector import EntitySelector, EntitySelectorConfig
+from homeassistant.helpers.selector import (
+    EntitySelector,
+    EntitySelectorConfig,
+    IconSelector,
+)
 
 from .const import (
     CONF_COOLDOWN,
-    CONF_CYCLE_SENSOR,
-    CONF_DURATION,
     CONF_PERSONS,
+    CONF_TRIGGER_SENSOR,
     DEFAULT_COOLDOWN,
-    DEFAULT_DURATION,
+    DEFAULT_ICON,
     DEFAULT_NAME,
     DEFAULT_PERSONS,
     DOMAIN,
@@ -22,11 +25,13 @@ from .const import (
 
 
 def _build_schema(defaults: dict[str, Any]) -> vol.Schema:
-    cycle_sensor = defaults.get(CONF_CYCLE_SENSOR)
-    cycle_key = (
-        vol.Optional(CONF_CYCLE_SENSOR, description={"suggested_value": cycle_sensor})
-        if cycle_sensor
-        else vol.Optional(CONF_CYCLE_SENSOR)
+    trigger_sensor = defaults.get(CONF_TRIGGER_SENSOR)
+    trigger_key = (
+        vol.Optional(
+            CONF_TRIGGER_SENSOR, description={"suggested_value": trigger_sensor}
+        )
+        if trigger_sensor
+        else vol.Optional(CONF_TRIGGER_SENSOR)
     )
     return vol.Schema(
         {
@@ -34,9 +39,9 @@ def _build_schema(defaults: dict[str, Any]) -> vol.Schema:
                 CONF_NAME, default=defaults.get(CONF_NAME, DEFAULT_NAME)
             ): str,
             vol.Required(
-                CONF_DURATION, default=defaults.get(CONF_DURATION, DEFAULT_DURATION)
-            ): vol.All(vol.Coerce(int), vol.Range(min=1, max=600)),
-            cycle_key: EntitySelector(EntitySelectorConfig(domain="binary_sensor")),
+                CONF_ICON, default=defaults.get(CONF_ICON, DEFAULT_ICON)
+            ): IconSelector(),
+            trigger_key: EntitySelector(EntitySelectorConfig(domain="binary_sensor")),
             vol.Required(
                 CONF_PERSONS, default=defaults.get(CONF_PERSONS, DEFAULT_PERSONS)
             ): str,
@@ -47,7 +52,7 @@ def _build_schema(defaults: dict[str, Any]) -> vol.Schema:
     )
 
 
-class ChronolavevaiselleConfigFlow(ConfigFlow, domain=DOMAIN):
+class WhoDidItConfigFlow(ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(
@@ -63,10 +68,10 @@ class ChronolavevaiselleConfigFlow(ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
-        return ChronolavevaiselleOptionsFlow(config_entry)
+        return WhoDidItOptionsFlow(config_entry)
 
 
-class ChronolavevaiselleOptionsFlow(OptionsFlow):
+class WhoDidItOptionsFlow(OptionsFlow):
     def __init__(self, config_entry: ConfigEntry) -> None:
         self._config_entry = config_entry
 

@@ -1,0 +1,11 @@
+done:
+  name: Mark as done
+  description: Records that a person completed the task.
+  fields:
+    person:
+      name: Person
+      description: Person who completed the task. Must be one of the configured persons.
+      required: true
+      example: Chloe
+      selector:
+        text: {}

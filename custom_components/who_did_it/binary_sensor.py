@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from homeassistant.components.binary_sensor import RestoreBinarySensor
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_ICON
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from . import entry_signal
-from .const import DOMAIN
+from . import entry_signal, get_entry_config
+from .const import DEFAULT_ICON, DOMAIN
 
 
 async def async_setup_entry(
@@ -16,17 +17,17 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    async_add_entities([DishesPendingBinarySensor(entry)])
+    async_add_entities([PendingBinarySensor(entry)])
 
 
-class DishesPendingBinarySensor(RestoreBinarySensor):
+class PendingBinarySensor(RestoreBinarySensor):
     _attr_has_entity_name = True
-    _attr_icon = "mdi:dishwasher-alert"
-    _attr_translation_key = "dishes_pending"
+    _attr_translation_key = "pending"
 
     def __init__(self, entry: ConfigEntry) -> None:
         self._entry = entry
-        self._attr_unique_id = f"{entry.entry_id}_dishes_pending"
+        self._attr_unique_id = f"{entry.entry_id}_pending"
+        self._attr_icon = get_entry_config(entry, CONF_ICON, DEFAULT_ICON)
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name=entry.title,
@@ -36,7 +37,7 @@ class DishesPendingBinarySensor(RestoreBinarySensor):
         await super().async_added_to_hass()
         last_state = await self.async_get_last_state()
         if last_state is not None:
-            self.hass.data[DOMAIN][self._entry.entry_id]["dishes_pending"] = (
+            self.hass.data[DOMAIN][self._entry.entry_id]["pending"] = (
                 last_state.state == "on"
             )
         self.async_on_remove(
@@ -54,5 +55,5 @@ class DishesPendingBinarySensor(RestoreBinarySensor):
     @property
     def is_on(self) -> bool:
         return bool(
-            self.hass.data[DOMAIN][self._entry.entry_id].get("dishes_pending", False)
+            self.hass.data[DOMAIN][self._entry.entry_id].get("pending", False)
         )
