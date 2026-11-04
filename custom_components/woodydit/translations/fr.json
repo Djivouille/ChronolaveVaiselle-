@@ -1,0 +1,62 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Woodydit",
+        "description": "Suivi des tâches ménagères : qui a fait quoi (vaisselle, linge, nourrir le chien...).",
+        "data": {
+          "name": "Nom",
+          "icon": "Icône",
+          "trigger_sensor": "Capteur binaire déclencheur (optionnel) : quand il passe de on à off, la tâche est marquée « à faire »",
+          "persons": "Personnes (séparées par des virgules)",
+          "cooldown": "Délai minimum entre deux réalisations (heures)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Cette tâche est déjà configurée."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Woodydit",
+        "description": "Modifiez la configuration de la tâche.",
+        "data": {
+          "name": "Nom",
+          "icon": "Icône",
+          "trigger_sensor": "Capteur binaire déclencheur (optionnel) : quand il passe de on à off, la tâche est marquée « à faire »",
+          "persons": "Personnes (séparées par des virgules)",
+          "cooldown": "Délai minimum entre deux réalisations (heures)"
+        }
+      }
+    }
+  },
+  "services": {
+    "done": {
+      "name": "Marquer comme fait",
+      "description": "Enregistre qu'une personne a réalisé la tâche.",
+      "fields": {
+        "person": {
+          "name": "Personne",
+          "description": "Personne ayant réalisé la tâche. Doit être l'une des personnes configurées."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "last_by": {
+        "name": "Dernière personne"
+      },
+      "last_at": {
+        "name": "Dernière fois le"
+      }
+    },
+    "binary_sensor": {
+      "pending": {
+        "name": "À faire"
+      }
+    }
+  }
+}

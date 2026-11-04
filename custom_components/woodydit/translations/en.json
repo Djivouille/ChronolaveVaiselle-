@@ -1,0 +1,62 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Woodydit",
+        "description": "Track who did a household task (dishes, laundry, feeding the dog...).",
+        "data": {
+          "name": "Name",
+          "icon": "Icon",
+          "trigger_sensor": "Trigger binary sensor (optional): when it switches from on to off, the task is marked as pending",
+          "persons": "Persons (comma separated)",
+          "cooldown": "Minimum delay between two completions (hours)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This task is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Woodydit",
+        "description": "Edit the task configuration.",
+        "data": {
+          "name": "Name",
+          "icon": "Icon",
+          "trigger_sensor": "Trigger binary sensor (optional): when it switches from on to off, the task is marked as pending",
+          "persons": "Persons (comma separated)",
+          "cooldown": "Minimum delay between two completions (hours)"
+        }
+      }
+    }
+  },
+  "services": {
+    "done": {
+      "name": "Mark as done",
+      "description": "Records that a person completed the task.",
+      "fields": {
+        "person": {
+          "name": "Person",
+          "description": "Person who completed the task. Must be one of the configured persons."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "last_by": {
+        "name": "Last done by"
+      },
+      "last_at": {
+        "name": "Last done at"
+      }
+    },
+    "binary_sensor": {
+      "pending": {
+        "name": "Pending"
+      }
+    }
+  }
+}
