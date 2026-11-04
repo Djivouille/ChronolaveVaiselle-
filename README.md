@@ -1,4 +1,4 @@
- # Who Did It <img src="custom_components/who_did_it/logo.png" alt="Logo Who Did It" width="30">
+ # Who Did It <img src="custom_components/who_did_it/logo.png" alt="Logo Who Did It" width="35">
 
 Icône de l'intégration : `mdi:account-question`
 
