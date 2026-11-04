@@ -1,6 +1,6 @@
 # Who Did It
 
-[![CI](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml/badge.svg)](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml)
+[![CI](https://github.com/Djivouille/who_did_it/actions/workflows/ci.yml/badge.svg)](https://github.com/Djivouille/who_did_it/actions/workflows/ci.yml)
 
 Custom integration Home Assistant générique pour suivre **qui a fait quoi** dans la maison :
 

@@ -3,9 +3,9 @@
   "name": "Who Did It",
   "codeowners": ["@Djivouille"],
   "config_flow": true,
-  "documentation": "https://github.com/Djivouille/ChronolaveVaiselle-",
+  "documentation": "https://github.com/Djivouille/who_did_it",
   "integration_type": "service",
   "iot_class": "calculated",
-  "issue_tracker": "https://github.com/Djivouille/ChronolaveVaiselle-/issues",
+  "issue_tracker": "https://github.com/Djivouille/who_did_it/issues",
   "version": "1.0.0"
 }
