@@ -1,5 +1,7 @@
 # Who Did It
 
+Icône de l'intégration : `mdi:account-question`
+
 [![CI](https://github.com/Djivouille/who_did_it/actions/workflows/ci.yml/badge.svg)](https://github.com/Djivouille/who_did_it/actions/workflows/ci.yml)
 
 Custom integration Home Assistant générique pour suivre **qui a fait quoi** dans la maison :

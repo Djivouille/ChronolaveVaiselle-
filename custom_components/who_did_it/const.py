@@ -9,7 +9,7 @@ CONF_PERSONS = "persons"
 CONF_COOLDOWN = "cooldown"
 
 DEFAULT_NAME = "Tâche"
-DEFAULT_ICON = "mdi:checkbox-marked-circle-outline"
+DEFAULT_ICON = "mdi:account-question"
 DEFAULT_PERSONS = "Chloe, Axel, Joelle, Jv"
 DEFAULT_COOLDOWN = 6
 
