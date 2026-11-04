@@ -13,3 +13,15 @@ start_cycle:
           max: 600
           unit_of_measurement: min
           mode: box
+
+empty:
+  name: Dishwasher emptied
+  description: Records that a person emptied the dishwasher.
+  fields:
+    person:
+      name: Person
+      description: Family member who emptied the dishwasher. Must be one of the configured persons.
+      required: true
+      example: Chloe
+      selector:
+        text: {}
