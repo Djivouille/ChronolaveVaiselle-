@@ -5,7 +5,8 @@ from datetime import timedelta
 
 import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
+from homeassistant.core import CoreState, HomeAssistant, ServiceCall
 from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.dispatcher import async_dispatcher_send
@@ -50,7 +51,21 @@ def entry_signal(entry_id: str) -> str:
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     _register_services(hass)
+    await _async_setup_frontend(hass)
     return True
+
+
+async def _async_setup_frontend(hass: HomeAssistant) -> None:
+    from .frontend import async_register_frontend
+
+    if hass.state == CoreState.running:
+        await async_register_frontend(hass)
+    else:
+
+        async def _register(_event) -> None:
+            await async_register_frontend(hass)
+
+        hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, _register)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

@@ -43,6 +43,33 @@ Tout est modifiable ensuite via **Options** de l'intégration.
 
 Tous les états sont restaurés après un redémarrage de Home Assistant.
 
+## Carte Lovelace intégrée
+
+L'intégration fournit une carte personnalisée **`custom:chronolavevaiselle-card`**, enregistrée automatiquement comme ressource Lovelace (mode storage, aucun ajout manuel nécessaire).
+
+Ajoutez-la depuis l'interface : **Ajouter une carte > ChronolaveVaiselle**. Tout se règle graphiquement :
+
+- **Titre de la carte** (optionnel).
+- **Capteur « Temps restant »** : détecté automatiquement (premier capteur de l'intégration).
+- **Afficher le statut** : lavage en cours avec temps restant et heure de fin, ou « vaisselle à ranger ».
+- **Afficher le dernier vidage** : qui et quand.
+- **Afficher les compteurs par personne** : détectés automatiquement depuis l'appareil.
+- **Afficher les boutons « J'ai vidé »** : chaque bouton appelle le service `chronolavevaiselle.empty` pour la personne concernée (cooldown anti-triche inclus).
+
+Exemple en YAML :
+
+```yaml
+type: custom:chronolavevaiselle-card
+entity: sensor.lave_vaisselle_temps_restant
+name: Lave-vaisselle
+show_status: true
+show_last_empty: true
+show_counters: true
+show_empty_buttons: true
+```
+
+> En mode YAML de Lovelace, ajoutez manuellement la ressource `/chronolavevaiselle/chronolavevaiselle-card.js` de type `module`.
+
 ## Services
 
 - `chronolavevaiselle.start_cycle` : démarre le chronomètre (champ optionnel `duration` en minutes).
