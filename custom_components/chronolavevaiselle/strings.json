@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ChronolaveVaiselle",
+        "description": "Configure the dishwasher timer.",
+        "data": {
+          "name": "Name",
+          "duration": "Default cycle duration (minutes)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This dishwasher is already configured."
+    }
+  },
+  "services": {
+    "start_cycle": {
+      "name": "Start cycle",
+      "description": "Starts the dishwasher countdown.",
+      "fields": {
+        "duration": {
+          "name": "Duration",
+          "description": "Cycle duration in minutes."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "remaining_time": {
+        "name": "Remaining time"
+      }
+    }
+  }
+}
