@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Woodydit",
+        "title": "Who Did It",
         "description": "Track who did a household task (dishes, laundry, feeding the dog...).",
         "data": {
           "name": "Name",
@@ -20,7 +20,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Woodydit",
+        "title": "Who Did It",
         "description": "Edit the task configuration.",
         "data": {
           "name": "Name",

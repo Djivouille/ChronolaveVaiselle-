@@ -1,6 +1,6 @@
 from homeassistant.const import Platform
 
-DOMAIN = "woodydit"
+DOMAIN = "who_did_it"
 
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
 

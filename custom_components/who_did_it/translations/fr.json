@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Woodydit",
+        "title": "Who Did It",
         "description": "Suivi des tâches ménagères : qui a fait quoi (vaisselle, linge, nourrir le chien...).",
         "data": {
           "name": "Nom",
@@ -20,7 +20,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Woodydit",
+        "title": "Who Did It",
         "description": "Modifiez la configuration de la tâche.",
         "data": {
           "name": "Nom",

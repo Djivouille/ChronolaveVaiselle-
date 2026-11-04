@@ -52,7 +52,7 @@ def _build_schema(defaults: dict[str, Any]) -> vol.Schema:
     )
 
 
-class WoodyditConfigFlow(ConfigFlow, domain=DOMAIN):
+class WhoDidItConfigFlow(ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(
@@ -68,10 +68,10 @@ class WoodyditConfigFlow(ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
-        return WoodyditOptionsFlow(config_entry)
+        return WhoDidItOptionsFlow(config_entry)
 
 
-class WoodyditOptionsFlow(OptionsFlow):
+class WhoDidItOptionsFlow(OptionsFlow):
     def __init__(self, config_entry: ConfigEntry) -> None:
         self._config_entry = config_entry
 

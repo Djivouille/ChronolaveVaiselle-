@@ -1,4 +1,4 @@
-# Woodydit
+# Who Did It
 
 [![CI](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml/badge.svg)](https://github.com/Djivouille/ChronolaveVaiselle-/actions/workflows/ci.yml)
 
@@ -14,16 +14,16 @@ Exemples d'utilisation : qui a vidé le lave-vaisselle, qui a sorti le lave-ling
 ### Via HACS
 
 1. Ajoutez ce dépôt comme dépôt personnalisé dans HACS (catégorie *Integration*).
-2. Installez **Woodydit** puis redémarrez Home Assistant.
+2. Installez **Who Did It** puis redémarrez Home Assistant.
 
 ### Manuelle
 
-1. Copiez le dossier `custom_components/woodydit/` dans le dossier `custom_components/` de votre installation Home Assistant.
+1. Copiez le dossier `custom_components/who_did_it/` dans le dossier `custom_components/` de votre installation Home Assistant.
 2. Redémarrez Home Assistant.
 
 ## Configuration
 
-Ajoutez l'intégration via **Paramètres > Appareils et services > Ajouter une intégration > Woodydit** (autant de fois que de tâches à suivre) :
+Ajoutez l'intégration via **Paramètres > Appareils et services > Ajouter une intégration > Who Did It** (autant de fois que de tâches à suivre) :
 
 - **Nom** : nom de la tâche (ex. `Lave-vaisselle`, `Lave-linge`, `Chien`).
 - **Icône** : icône Material Design affichée sur toutes les entités de la tâche (ex. `mdi:dishwasher`, `mdi:washing-machine`, `mdi:dog`).
@@ -46,7 +46,7 @@ Toutes les entités d'une même tâche partagent l'icône configurée. Tous les 
 
 ## Services
 
-- `woodydit.done` : enregistre qu'une personne a réalisé la tâche (champ `person`, doit être une personne configurée). Le service s'applique à toutes les entrées où cette personne est configurée.
+- `who_did_it.done` : enregistre qu'une personne a réalisé la tâche (champ `person`, doit être une personne configurée). Le service s'applique à toutes les entrées où cette personne est configurée.
 
 Règles du service `done` :
 
@@ -56,9 +56,9 @@ Règles du service `done` :
 
 ## Événements
 
-- `woodydit_pending` : la tâche vient d'être marquée « à faire » (capteur déclencheur passé `on` → `off`).
-- `woodydit_done` : réalisation validée (`entry_id`, `person`, `count`).
-- `woodydit_denied` : réalisation refusée (`entry_id`, `person`, `reason` = `nothing_pending` ou `cooldown`, `retry_at` si cooldown).
+- `who_did_it_pending` : la tâche vient d'être marquée « à faire » (capteur déclencheur passé `on` → `off`).
+- `who_did_it_done` : réalisation validée (`entry_id`, `person`, `count`).
+- `who_did_it_denied` : réalisation refusée (`entry_id`, `person`, `reason` = `nothing_pending` ou `cooldown`, `retry_at` si cooldown).
 
 ## Exemples d'automatisations
 
@@ -69,7 +69,7 @@ automation:
   - alias: "Lave-linge terminé : prévenir la famille"
     triggers:
       - trigger: event
-        event_type: woodydit_pending
+        event_type: who_did_it_pending
         event_data:
           entry_id: !secret entry_id_lave_linge
     actions:
@@ -90,7 +90,7 @@ automation:
         event_data:
           command: /tache_faite_chloe
     actions:
-      - action: woodydit.done
+      - action: who_did_it.done
         data:
           person: Chloe
 ```
@@ -99,10 +99,10 @@ Alerter en cas de tentative de triche (cooldown non respecté) :
 
 ```yaml
 automation:
-  - alias: "Woodydit : tentative de triche"
+  - alias: "Who Did It : tentative de triche"
     triggers:
       - trigger: event
-        event_type: woodydit_denied
+        event_type: who_did_it_denied
         event_data:
           reason: cooldown
     actions:
@@ -113,4 +113,4 @@ automation:
 
 ## Traductions
 
-L'intégration est traduite en **français** et **anglais** (`custom_components/woodydit/translations/`). Pour ajouter une langue, consultez [CONTRIBUTING.md](CONTRIBUTING.md) : il suffit d'ajouter un fichier `translations/<lang>.json` via une pull request Git.
+L'intégration est traduite en **français** et **anglais** (`custom_components/who_did_it/translations/`). Pour ajouter une langue, consultez [CONTRIBUTING.md](CONTRIBUTING.md) : il suffit d'ajouter un fichier `translations/<lang>.json` via une pull request Git.

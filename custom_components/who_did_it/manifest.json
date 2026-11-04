@@ -1,6 +1,6 @@
 {
-  "domain": "woodydit",
-  "name": "Woodydit",
+  "domain": "who_did_it",
+  "name": "Who Did It",
   "codeowners": ["@Djivouille"],
   "config_flow": true,
   "documentation": "https://github.com/Djivouille/ChronolaveVaiselle-",
