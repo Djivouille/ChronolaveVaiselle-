@@ -1,0 +1,11 @@
+{
+  "domain": "chronolavevaiselle",
+  "name": "ChronolaveVaiselle",
+  "codeowners": ["@Djivouille"],
+  "config_flow": true,
+  "documentation": "https://github.com/Djivouille/ChronolaveVaiselle-",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/Djivouille/ChronolaveVaiselle-/issues",
+  "version": "0.1.0"
+}

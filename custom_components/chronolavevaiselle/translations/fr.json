@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ChronolaveVaiselle",
+        "description": "Configurez le chronomètre du lave-vaisselle.",
+        "data": {
+          "name": "Nom",
+          "duration": "Durée du cycle par défaut (minutes)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Ce lave-vaisselle est déjà configuré."
+    }
+  },
+  "services": {
+    "start_cycle": {
+      "name": "Démarrer un cycle",
+      "description": "Démarre le compte à rebours du lave-vaisselle.",
+      "fields": {
+        "duration": {
+          "name": "Durée",
+          "description": "Durée du cycle en minutes."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "remaining_time": {
+        "name": "Temps restant"
+      }
+    }
+  }
+}
