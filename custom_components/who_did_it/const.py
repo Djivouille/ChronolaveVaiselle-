@@ -1,6 +1,24 @@
+import json
+from pathlib import Path
+from typing import Final
+
 from homeassistant.const import Platform
 
 DOMAIN = "who_did_it"
+
+_MANIFEST_PATH = Path(__file__).parent / "manifest.json"
+with open(_MANIFEST_PATH, encoding="utf-8") as _f:
+    INTEGRATION_VERSION: Final[str] = json.load(_f).get("version", "0.0.0")
+
+URL_BASE: Final[str] = f"/{DOMAIN}"
+
+JSMODULES: Final[list[dict[str, str]]] = [
+    {
+        "name": "Carte Who Did It",
+        "filename": "who_did_it-card.js",
+        "version": INTEGRATION_VERSION,
+    },
+]
 
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
 

@@ -46,6 +46,33 @@ Tout est modifiable ensuite via **Options** de l'intégration.
 
 Toutes les entités d'une même tâche partagent l'icône configurée. Tous les états sont restaurés après un redémarrage de Home Assistant.
 
+## Carte Lovelace intégrée
+
+L'intégration fournit une carte personnalisée **`custom:who-did-it-card`**, enregistrée automatiquement comme ressource Lovelace (mode storage, aucun ajout manuel nécessaire).
+
+Ajoutez-la depuis l'interface : **Ajouter une carte > Who Did It**. Tout se règle graphiquement :
+
+- **Titre de la carte** (optionnel).
+- **Capteur binaire « À faire »** : détecté automatiquement (premier capteur binaire de l'intégration).
+- **Afficher le statut** : « à faire » ou « rien à faire ».
+- **Afficher la dernière réalisation** : qui et quand.
+- **Afficher les compteurs par personne** : détectés automatiquement depuis l'appareil.
+- **Afficher les boutons « C'est fait ! »** : chaque bouton appelle le service `who_did_it.done` pour la personne concernée (cooldown anti-triche inclus).
+
+Exemple en YAML :
+
+```yaml
+type: custom:who-did-it-card
+entity: binary_sensor.lave_vaisselle_pending
+name: Lave-vaisselle
+show_status: true
+show_last_done: true
+show_counters: true
+show_done_buttons: true
+```
+
+> En mode YAML de Lovelace, ajoutez manuellement la ressource `/who_did_it/who_did_it-card.js` de type `module`.
+
 ## Services
 
 - `who_did_it.done` : enregistre qu'une personne a réalisé la tâche (champ `person`, doit être une personne configurée). Le service s'applique à toutes les entrées où cette personne est configurée.
