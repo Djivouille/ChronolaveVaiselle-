@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from homeassistant.components.binary_sensor import RestoreBinarySensor
+from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_ICON
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.restore_state import RestoreEntity
 
 from . import entry_signal, get_entry_config
 from .const import DEFAULT_ICON, DOMAIN
@@ -20,7 +21,7 @@ async def async_setup_entry(
     async_add_entities([PendingBinarySensor(entry)])
 
 
-class PendingBinarySensor(RestoreBinarySensor):
+class PendingBinarySensor(RestoreEntity, BinarySensorEntity):
     _attr_has_entity_name = True
     _attr_translation_key = "pending"
 
