@@ -15,7 +15,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt as dt_util
-from homeassistant.util.slug import slugify
+from homeassistant.util import slugify
 
 from . import entry_signal, get_entry_config, get_persons
 from .const import DEFAULT_ICON, DOMAIN
